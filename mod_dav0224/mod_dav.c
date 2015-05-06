@@ -1042,6 +1042,8 @@ static int dav_method_put(request_rec *r)
         resource->exists = 1;
     }
 
+    /* ADD-1 */
+
     /* restore modifiability of resources back to what they were */
     err2 = dav_auto_checkin(r, resource, err != NULL /* undo if error */,
                             0 /*unlock*/, &av_info);
@@ -1218,6 +1220,8 @@ static int dav_method_delete(request_rec *r)
         /* ### add a higher-level description? */
         return dav_handle_err(r, err, NULL);
     }
+
+    /* ADD-2 */
 
     /* try to remove the resource */
     err = (*resource->hooks->remove_resource)(resource, &multi_response);
@@ -2546,6 +2550,8 @@ static int dav_method_mkcol(request_rec *r)
         }
     }
 
+    /* ADD-3 */
+
     /* return an appropriate response (HTTP_CREATED) */
     return dav_created(r, NULL, "Collection", 0);
 }
@@ -2953,6 +2959,8 @@ static int dav_method_copymove(request_rec *r, int is_move)
             return dav_handle_err(r, err, NULL);
         }
     }
+
+    /* ADD-4 */
 
     /* return an appropriate response (HTTP_CREATED or HTTP_NO_CONTENT) */
     return dav_created(r, lookup.rnew->uri, "Destination",
