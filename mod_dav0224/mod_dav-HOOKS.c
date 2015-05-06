@@ -59,11 +59,6 @@
 
 #include "mod_dav.h"
 
-/* ADD-0 start */
-#define MY_DAVEXEC_PUT_CMDPATH "/opt/bin/davexec/davexec_put.py"
-#define MY_DAVEXEC_DELETE_CMDPATH "/opt/bin/davexec/davexec_delete.py"
-#define MY_ADDLEN 256   // len ESC chars, len_MY_DAVEXEC_CMDPATH, len MY_DAVEXEC_OPTIONSTR
-/* ADD-0 end */
 
 /* ### what is the best way to set this? */
 #define DAV_DEFAULT_PROVIDER    "filesystem"
@@ -1047,35 +1042,7 @@ static int dav_method_put(request_rec *r)
         resource->exists = 1;
     }
 
-    /* ADD-1 start */
-    if (strncmp( "0", apr_table_get(r->headers_in, "Content-length"), 1) != 0) {
-        int my_cmdlen = strlen( r->filename ) + MY_ADDLEN;
-        char my_newcmd[my_cmdlen];
-        char my_newfilename[my_cmdlen];
-
-        char *s, *d;
-        s = &((r->filename)[0]);
-        d = &(my_newfilename[0]);
-        while( *s != '\0' ) {
-            if ( (*s == '$') || (*s == '`') || (*s == '\\') ) {
-                *d = '\\'; d++; *d = *s;
-            }
-            else {
-                *d = *s;
-            }
-            s++; d++;
-        }
-        *d = '\0';
-
-        sprintf( my_newcmd, "%s \"%s\" ", MY_DAVEXEC_PUT_CMDPATH, my_newfilename );
-        fprintf( stderr, "\nDAVEXEC(put)\nsystem[%s]\n", my_newcmd);
-        int ret = system( my_newcmd);
-        if (ret == -1) {
-            fprintf( stderr, "ERROR, DAVEXEC(put), system() function, errno=[%d]\n", errno);
-        }
-    }
-    /* ADD-1 end */
-
+    /* ADD-1 */
 
     /* restore modifiability of resources back to what they were */
     err2 = dav_auto_checkin(r, resource, err != NULL /* undo if error */,
@@ -1254,34 +1221,7 @@ static int dav_method_delete(request_rec *r)
         return dav_handle_err(r, err, NULL);
     }
 
-    /* ADD-2 start */
-    {
-        int my_cmdlen = strlen( r->filename ) + MY_ADDLEN;
-        char my_newcmd[my_cmdlen];
-        char my_newfilename[my_cmdlen];
-
-        char *s, *d;
-        s = &((r->filename)[0]);
-        d = &(my_newfilename[0]);
-        while( *s != '\0' ) {
-            if ( (*s == '$') || (*s == '`') || (*s == '\\') ) {
-                *d = '\\'; d++; *d = *s;
-            }
-            else {
-                *d = *s;
-            }
-            s++; d++;
-        }
-        *d = '\0';
-
-        sprintf( my_newcmd, "%s \"%s\" ", MY_DAVEXEC_DELETE_CMDPATH, my_newfilename );
-        fprintf( stderr, "\nDAVEXEC(delete)\nsystem[%s]\n", my_newcmd);
-        int ret = system( my_newcmd);
-        if (ret == -1) {
-            fprintf( stderr, "ERROR, DAVEXEC(delete), system() function, errno=[%d]\n", errno);
-        }
-    }
-    /* ADD-2 end */
+    /* ADD-2 */
 
     /* try to remove the resource */
     err = (*resource->hooks->remove_resource)(resource, &multi_response);
@@ -2610,9 +2550,7 @@ static int dav_method_mkcol(request_rec *r)
         }
     }
 
-    /* ADD-3 start */
-    fprintf( stderr, "\nDAVEXEC(mkcol)\nNo exec(). Only mkdir\n");
-    /* ADD-3 end */
+    /* ADD-3 */
 
     /* return an appropriate response (HTTP_CREATED) */
     return dav_created(r, NULL, "Collection", 0);
@@ -3022,9 +2960,7 @@ static int dav_method_copymove(request_rec *r, int is_move)
         }
     }
 
-    /* ADD-4 start */
-    fprintf( stderr, "\nDAVEXEC(copymove)\nNo exec. Only rename.\n");
-    /* ADD-4 end */
+    /* ADD-4 */
 
     /* return an appropriate response (HTTP_CREATED or HTTP_NO_CONTENT) */
     return dav_created(r, lookup.rnew->uri, "Destination",
