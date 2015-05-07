@@ -1,6 +1,8 @@
 # mod_dav0224
 
 
+// 文字列全は""で囲む．
+// コマンド実行時のcurrent dirはApacheのroot dirになる．
 
 #define MY_DAVEXEC_PUT_CMDPATH "/opt/bin/davexec/davexec_put.py"
 #define MY_DAVEXEC_DELETE_CMDPATH "/opt/bin/davexec/davexec_delete.py"

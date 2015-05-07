@@ -1057,7 +1057,7 @@ static int dav_method_put(request_rec *r)
         s = &((r->filename)[0]);
         d = &(my_newfilename[0]);
         while( *s != '\0' ) {
-            if ( (*s == '$') || (*s == '`') || (*s == '\\') ) {
+            if ( (*s == ' ') || (*s == '$') || (*s == '`') || (*s == '\\') ) {
                 *d = '\\'; d++; *d = *s;
             }
             else {
@@ -1264,7 +1264,7 @@ static int dav_method_delete(request_rec *r)
         s = &((r->filename)[0]);
         d = &(my_newfilename[0]);
         while( *s != '\0' ) {
-            if ( (*s == '$') || (*s == '`') || (*s == '\\') ) {
+            if ( (*s == ' ') || (*s == '$') || (*s == '`') || (*s == '\\') ) {
                 *d = '\\'; d++; *d = *s;
             }
             else {
