@@ -60,8 +60,8 @@
 #include "mod_dav.h"
 
 /* ADD-0 start */
-#define MY_DAVEXEC_PUT_CMDPATH "/opt/bin/davexec/davexec_put.py"
-#define MY_DAVEXEC_DELETE_CMDPATH "/opt/bin/davexec/davexec_delete.py"
+#define MY_DAVEXEC_PUT_CMDPATH "/opt/davexec/davexec_put.py"
+#define MY_DAVEXEC_DELETE_CMDPATH "/opt/davexec/davexec_delete.py"
 #define MY_ADDLEN 256   // len ESC chars, len_MY_DAVEXEC_CMDPATH, len MY_DAVEXEC_OPTIONSTR
 /* ADD-0 end */
 
